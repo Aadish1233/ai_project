@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DinnerTonight Bio Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>DinnerTonight Bio Generator</h1>
+        <form id="bioForm">
+            <label for="career">Career:</label>
+            <select id="career" name="career">
+                <option>Software Engineer</option>
+                <option>Artist</option>
+                <option>Entrepreneur</option>
+                <option>Chef</option>
+                <option>Musician</option>
+            </select>
+
+            <label for="personality">Personality:</label>
+            <select id="personality" name="personality">
+                <option>Adventurous</option>
+                <option>Creative</option>
+                <option>Compassionate</option>
+                <option>Outgoing</option>
+                <option>Introverted</option>
+            </select>
+
+            <label for="interests">Interests:</label>
+            <select id="interests" name="interests">
+                <option>Cooking</option>
+                <option>Traveling</option>
+                <option>Fitness</option>
+                <option>Music</option>
+                <option>Literature</option>
+            </select>
+
+            <label for="goals">Relationship Goals:</label>
+            <select id="goals" name="goals">
+                <option>Casual</option>
+                <option>Long-term</option>
+                <option>Adventurous</option>
+                <option>Deep Connection</option>
+            </select>
+
+            <button type="submit">Generate Bio</button>
+        </form>
+
+        <div id="result">
+            <h2>Your Generated Bio:</h2>
+            <p id="bioText">Enter your preferences to generate a bio.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
