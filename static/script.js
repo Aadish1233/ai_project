@@ -20,7 +20,7 @@ document.getElementById('bioForm').addEventListener('submit', async (e) => {
         if (result.bio) {
             document.getElementById('bioText').textContent = result.bio;
         } else {
-            document.getElementById('bioText').textContent = 'Error generating bio. Please try again.';
+            document.getElementById('bioText').textContent = 'Error 429';
         }
     } catch (error) {
         document.getElementById('bioText').textContent = 'Error connecting to the server.';
