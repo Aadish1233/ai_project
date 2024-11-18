@@ -43,7 +43,7 @@ def home():
     return render_template('index.html')
 
 # API Endpoint for Bio Generation
-@app.route('/generate_bio', methods=['POST'])
+@app.route('/generate_bio', methods=['GET','POST'])
 def generate_bio():
     data = request.json
     career = data.get('career', '')
