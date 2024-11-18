@@ -18,6 +18,7 @@ def generate_bio_with_llama(career, personality, interests, goals):
 
     headers = {
         "Authorization": f"Bearer {HUGGING_FACE_API_KEY}"
+         "Content-Type": "application/json"
     }
     payload = {
         "inputs": prompt,
