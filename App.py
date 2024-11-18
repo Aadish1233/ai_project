@@ -1,62 +1,55 @@
-from flask import Flask, request, jsonify, render_template
 import requests
+from flask import Flask, request, jsonify
 
-# Initialize Flask App
 app = Flask(__name__)
 
-# Configure Hugging Face API
-HUGGING_FACE_API_KEY = "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"
-MODEL_ID = "meta-llama/Llama-2-7b-chat-hf"  # Example Llama model
+HUGGING_FACE_API_KEY = "your_hugging_face_api_key"
+API_URL = "https://api-inference.huggingface.co/models/meta-llama/Llama-2-7b-chat-hf"
 
 def generate_bio_with_llama(career, personality, interests, goals):
-    prompt = (f"Generate a creative and appealing bio for a user based on the following details:\n"
+    prompt = (f"Generate a creative and appealing bio based on the following details:\n"
               f"Career: {career}\n"
               f"Personality: {personality}\n"
               f"Interests: {interests}\n"
-              f"Relationship Goals: {goals}\n"
-              f"Make it friendly and engaging.")
+              f"Relationship Goals: {goals}\n")
 
     headers = {
         "Authorization": f"Bearer {HUGGING_FACE_API_KEY}",
-         "Content-Type": "application/json"
-    }
-    payload = {
-        "inputs": prompt,
-        "parameters": {"max_new_tokens": 100, "temperature": 0.7}
+        "Content-Type": "application/json"  # Ensure correct Content-Type
     }
 
-    response = requests.post(
-        f"https://api-inference.huggingface.co/models/{MODEL_ID}",
-        headers=headers,
-        json=payload
-    )
+    payload = {
+        "inputs": prompt,
+        "parameters": {
+            "max_new_tokens": 100,
+            "temperature": 0.7
+        }
+    }
+
+    response = requests.post(API_URL, headers=headers, json=payload)
 
     if response.status_code == 200:
         result = response.json()
-        bio = result[0]['generated_text']
-        return bio.strip()
+        if isinstance(result, list) and "generated_text" in result[0]:
+            return result[0]["generated_text"].strip()
+        return "Bio generation failed due to unexpected response format."
     else:
+        print(f"Error: {response.status_code} - {response.text}")
         return "Error generating bio."
 
-# Home Route
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-# API Endpoint for Bio Generation
-@app.route('/generate_bio', methods=['GET','POST'])
+@app.route('/generate_bio', methods=['POST'])
 def generate_bio():
+    if request.content_type != 'application/json':
+        return jsonify({"error": "Content-Type must be application/json"}), 415
+
     data = request.json
     career = data.get('career', '')
     personality = data.get('personality', '')
     interests = data.get('interests', '')
     goals = data.get('goals', '')
 
-    try:
-        bio = generate_bio_with_llama(career, personality, interests, goals)
-        return jsonify({"bio": bio})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    bio = generate_bio_with_llama(career, personality, interests, goals)
+    return jsonify({"bio": bio})
 
 if __name__ == '__main__':
     app.run(debug=True)
